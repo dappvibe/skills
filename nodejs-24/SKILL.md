@@ -9,7 +9,7 @@ This specification establishes the foundation for building high-performance, ult
 
 ## 1. Hard Engineering Constraints
 
-* **Direct TypeScript Execution:** Always configure code and tests to run directly via native Node.js TypeScript execution (e.g., `node main.ts` or `node --test`). Using `tsc` or `ts-node` for execution is prohibited.
+* **Direct TypeScript Execution:** Always configure code and tests to run directly via native Node.js TypeScript execution (e.g., `node main.ts` or `node --test`). Using `tsc` or `ts-node` for execution is prohibited. Node 24+ strips by default thus never add `--experimental-strip-types`.
 * **Module Layout:** Force ESM by setting `"type": "module"` in `package.json`. All relative path imports must explicitly append the `.js` extension.
 * **Zero-Dependency:** Never install third party utilities for tasks supported natively by Node.js 24+ including experimental. Use of `dotenv`, `jest`, `ts-jest`, `mocha`, `axios`, `@nestjs/axios`, filesystem utilities or standalone regex escapers is strictly forbidden.
 * **Native Testing:** Use `node:test` and `node:assert/strict` exclusively.
