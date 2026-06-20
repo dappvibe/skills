@@ -71,7 +71,7 @@ Use `scripts/wordstat.py` when the user wants to research search demand, find po
 See full API reference: `skills/yandex-search-api/references/wordstat.gettop..md`
 
 ```bash
-python skills/yandex-search-api/scripts/wordstat.py "keyword" [options]
+python3 skills/yandex-search-api/scripts/wordstat.py "keyword" [options]
 ```
 
 No extra dependencies — uses only stdlib `urllib`.
