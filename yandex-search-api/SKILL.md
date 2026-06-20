@@ -7,6 +7,8 @@ description: Use this skill whenever the user asks to search the web, look somet
 
 When the user asks to search the web, run `scripts/search.py` with the appropriate query and flags. Read the JSON output and summarise the findings for the user.
 
+**Never fabricate results.** Only report what is present in the JSON output of the script. If the script fails, returns an empty `documents` array, or is not run for any reason — tell the user that the search did not return results. Do not guess, invent URLs, or fill in from memory.
+
 ## Before running the script
 
 Install the SDK library once into the local user environment:
