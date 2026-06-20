@@ -107,6 +107,49 @@ No extra dependencies — uses only stdlib `urllib`.
 
 **Never fabricate counts or phrases.** Only report what the script returns.
 
+## Wordstat Dynamics — keyword trend over time (market research)
+
+Use `scripts/wordstat_dynamics.py` when the user wants to see how search demand for a keyword changed over time — growth, seasonality, spikes.
+
+See full API reference: `skills/yandex-search-api/references/wordstat.dynamics.md`
+
+```bash
+python3 skills/yandex-search-api/scripts/wordstat_dynamics.py "keyword" --from-date YYYY-MM-DD [options]
+```
+
+The `--to-date` is automatically snapped to the last day of the period (required by the API).
+
+### Flags
+
+| Flag | Default | Allowed values | Description |
+|------|---------|---------------|-------------|
+| `phrase` | *(required)* | string ≤ 400 chars | Keyword to look up |
+| `--from-date` | *(required)* | `YYYY-MM-DD` | Start of date range |
+| `--to-date` | today | `YYYY-MM-DD` | End of date range (auto-snapped to period end) |
+| `--period` | `PERIOD_MONTHLY` | `PERIOD_MONTHLY` `PERIOD_WEEKLY` `PERIOD_DAILY` | Aggregation granularity |
+| `--regions` | *(all)* | Yandex region IDs | Filter by region, e.g. `--regions 213 2` |
+| `--devices` | `DEVICE_ALL` | `DEVICE_ALL` `DEVICE_DESKTOP` `DEVICE_PHONE` `DEVICE_TABLET` | Filter by device type |
+
+### Output format
+
+```json
+{
+  "phrase": "keyword",
+  "period": "PERIOD_MONTHLY",
+  "from_date": "2025-01-01",
+  "to_date": "2025-12-31",
+  "results": [
+    { "date": "2025-01-01", "count": 12717, "share": 0.000107 },
+    { "date": "2025-02-01", "count": 14205, "share": 0.000124 }
+  ]
+}
+```
+
+- **`count`** — number of queries containing the keyword in that period
+- **`share`** — fraction of all Yandex queries (use to normalise across periods of different total volume)
+
+**Never fabricate counts or dates.** Only report what the script returns.
+
 ## If credentials are missing
 
 Check whether the required env vars are set:
