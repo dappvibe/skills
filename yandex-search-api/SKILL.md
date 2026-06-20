@@ -1,6 +1,6 @@
 ---
 name: yandex-search-api
-description: Use this skill whenever the user asks to search the web, look something up online, find information, or research a topic. Runs a Yandex web search via a ready-made script and returns results as JSON.
+description: Use this skill whenever the user asks to search the web, look something up online, find information, research a topic, or analyse keyword/search demand for market research. Provides two scripts: web search (search.py) and Yandex Wordstat keyword stats (wordstat.py).
 ---
 
 # Yandex Web Search
@@ -63,6 +63,49 @@ The script always searches the **Russian index** and returns **JSON** to stdout.
 ```
 
 Read `title`, `url`, and `passages` to answer the user. Fetch more results with `--page 1`, `--page 2`, etc.
+
+## Wordstat — keyword demand stats (market research)
+
+Use `scripts/wordstat.py` when the user wants to research search demand, find popular query variations, or validate keyword ideas. Data covers the **last 30 days** across Yandex.
+
+See full API reference: `skills/yandex-search-api/references/wordstat.gettop..md`
+
+```bash
+python skills/yandex-search-api/scripts/wordstat.py "keyword" [options]
+```
+
+No extra dependencies — uses only stdlib `urllib`.
+
+### Flags
+
+| Flag | Default | Allowed values | Description |
+|------|---------|---------------|-------------|
+| `phrase` | *(required)* | string ≤ 400 chars | Keyword to look up |
+| `--num-phrases` | `50` | 1–2000 | How many phrases to return |
+| `--regions` | *(all)* | Yandex region IDs | Filter by region, e.g. `--regions 213 2` |
+| `--devices` | `DEVICE_ALL` | `DEVICE_ALL` `DEVICE_DESKTOP` `DEVICE_PHONE` `DEVICE_TABLET` | Filter by device type |
+
+### Output format
+
+```json
+{
+  "phrase": "keyword",
+  "total_count": 182374,
+  "results": [
+    { "phrase": "keyword something", "count": 45210 },
+    { "phrase": "buy keyword", "count": 31500 }
+  ],
+  "associations": [
+    { "phrase": "related term", "count": 12000 }
+  ]
+}
+```
+
+- **`total_count`** — total queries containing all keywords regardless of order
+- **`results`** — popular queries that include the phrase, sorted by volume
+- **`associations`** — semantically similar queries users also searched for
+
+**Never fabricate counts or phrases.** Only report what the script returns.
 
 ## If credentials are missing
 
